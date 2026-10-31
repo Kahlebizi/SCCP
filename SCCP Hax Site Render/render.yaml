@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: sccp-hax
+    runtime: node
+    plan: free
+    buildCommand: npm ci --include=dev && npm run build
+    startCommand: npm start
+    healthCheckPath: /healthz
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: 24.18.0
+      - key: DATABASE_URL
+        fromDatabase:
+          name: sccp-hax-db
+          property: connectionString
+      - key: ADMIN_USERNAME
+        value: KahLebz
+      - key: ADMIN_PASSWORD_HASH
+        sync: false
+databases:
+  - name: sccp-hax-db
+    plan: free
+    databaseName: sccphax
+    user: sccphax
+    ipAllowList: []
